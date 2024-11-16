@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "34569959092",
+    "project_id": "awn-ju",
+    "storage_bucket": "awn-ju.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34569959092:android:3a3784cf32f95f115309e1",
+        "android_client_info": {
+          "package_name": "com.example.awn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKTc72fJdbR7ZkCEDeN_vE2P0I3yVkaXg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
