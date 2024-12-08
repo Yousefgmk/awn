@@ -171,7 +171,7 @@ class _HelpRequestState extends State<HelpRequest> {
                 Row(
                   children: [
                     const Text(
-                      "Address: ", // Changed from translate("Address")
+                      "Address: ",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       textAlign: TextAlign.start,
@@ -196,7 +196,7 @@ class _HelpRequestState extends State<HelpRequest> {
                       builder: (context) {
                         return AlertDialog(
                           content: const Text(
-                            "Are you sure you want to delete this help request?", // Changed from translate("SureDeleteClaim?")
+                            "Are you sure you want to delete this help request?",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -208,7 +208,7 @@ class _HelpRequestState extends State<HelpRequest> {
                                 Navigator.of(context).pop();
                               },
                               child: const Text(
-                                "Cancel", // Changed from translate("Cancel")
+                                "Cancel",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,

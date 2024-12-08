@@ -21,7 +21,7 @@ class LocationInputState extends State<LocationInput> {
   double? latitude;
   double? longitude;
   Marker? _activeMarker;
-  String googleMapsApiKey = 'AIzaSyBGNtLfBQOdXvxGKU57fOrnji0Rm20x5CE';
+  String googleMapsApiKey = 'AIzaSyDU0qXQ1tFpXfIHC4O8NkURcrs843cMPoA';
 
   @override
   void initState() {
@@ -30,53 +30,57 @@ class LocationInputState extends State<LocationInput> {
   }
 
   Future<void> _getCurrentLocation() async {
-    final remoteConfig = FirebaseRemoteConfig.instance;
-    await remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 60),
-      minimumFetchInterval: const Duration(hours: 1),
-    ));
-    await remoteConfig.fetchAndActivate();
-    googleMapsApiKey = remoteConfig.getString('maps_api_key');
-    Location location = Location();
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 60),
+    minimumFetchInterval: const Duration(hours: 1),
+  ));
+  
+  
+  // Print the Google Maps API key for debugging purposes
+  print('Google Maps API Key: $googleMapsApiKey');
+  
+  Location location = Location();
 
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
+  bool serviceEnabled;
+  PermissionStatus permissionGranted;
+  LocationData locationData;
 
-    serviceEnabled = await location.serviceEnabled();
+  serviceEnabled = await location.serviceEnabled();
+  if (!serviceEnabled) {
+    serviceEnabled = await location.requestService();
     if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
+      return;
     }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    locationData = await location.getLocation();
-
-    setState(() {
-      latitude = locationData.latitude;
-      longitude = locationData.longitude;
-      _activeMarker = Marker(
-        markerId: const MarkerId('selectedLocation'),
-        position: LatLng(latitude!, longitude!),
-      );
-    });
-    widget.onLoaded(latitude!, longitude!);
-    widget.onChanged(latitude!, longitude!);
   }
+
+  permissionGranted = await location.hasPermission();
+  if (permissionGranted == PermissionStatus.denied) {
+    permissionGranted = await location.requestPermission();
+    if (permissionGranted != PermissionStatus.granted) {
+      return;
+    }
+  }
+
+  locationData = await location.getLocation();
+
+  setState(() {
+    latitude = locationData.latitude;
+    longitude = locationData.longitude;
+    _activeMarker = Marker(
+      markerId: const MarkerId('selectedLocation'),
+      position: LatLng(latitude!, longitude!),
+    );
+  });
+  widget.onLoaded(latitude!, longitude!);
+  widget.onChanged(latitude!, longitude!);
+}
+
 
   String get locationImage {
     return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=16&size=600x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=$googleMapsApiKey';
   }
-
+  
   void _selectLocation(BuildContext context) {
     showDialog(
       context: context,

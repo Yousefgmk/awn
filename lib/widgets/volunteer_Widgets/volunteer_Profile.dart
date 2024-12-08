@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:awn/services/auth_services.dart' as auth_services;
-import 'package:awn/screens/specialNeedPortal/history.dart'; 
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key, required this.userData});
-  final DocumentSnapshot userData;
+class VolunteerProfile extends StatefulWidget {
+  const VolunteerProfile({super.key, required this.volunteerData});
+  final DocumentSnapshot volunteerData;
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<VolunteerProfile> createState() => _VolunteerProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _VolunteerProfileState extends State<VolunteerProfile> {
   final TextEditingController _newNameController = TextEditingController();
   final TextEditingController _newPhoneNumberController =
       TextEditingController();
@@ -58,8 +55,7 @@ class _UserProfileState extends State<UserProfile> {
               TextField(
                 controller: _newPhoneNumberController,
                 decoration: InputDecoration(
-                  labelText:
-                      "New Phone Number",
+                  labelText: "New Phone Number",
                   labelStyle: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -85,7 +81,7 @@ class _UserProfileState extends State<UserProfile> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                "Cancel", 
+                "Cancel",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -100,15 +96,13 @@ class _UserProfileState extends State<UserProfile> {
                   if (_newNameController.text.isNotEmpty) {
                     await auth_services.updateDisplayName(
                       name: _newNameController.text.trim(),
-                      userType:
-                          'specialNeed',
+                      userType: 'volunteer',
                     );
                   }
                   if (_newPhoneNumberController.text.isNotEmpty) {
                     await auth_services.updatePhoneNumber(
                       phoneNumber: _newPhoneNumberController.text.trim(),
-                      userType:
-                          'specialNeed',
+                      userType: 'volunteer',
                     );
                   }
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -122,7 +116,7 @@ class _UserProfileState extends State<UserProfile> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                "Confirm", // Changed from translate("Confirm")
+                "Confirm",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -145,7 +139,8 @@ class _UserProfileState extends State<UserProfile> {
           Stack(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -155,7 +150,7 @@ class _UserProfileState extends State<UserProfile> {
                       radius: 40,
                       child: ClipOval(
                         child: Image.asset(
-                          widget.userData['gender'] == 'Male'
+                          widget.volunteerData['gender'] == 'Male'
                               ? 'assets/images/male_avatar.webp'
                               : 'assets/images/female_avatar.png',
                           fit: BoxFit.cover,
@@ -169,14 +164,60 @@ class _UserProfileState extends State<UserProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${widget.userData['name']}",
+                          "${widget.volunteerData['name']}",
                           style: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
                         const Text(
-                          "Special need",
+                          "Volunteer",
                           style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        const SizedBox(height: 5),
+                        // Display the rating from the database
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('volunteers')
+                              .doc(widget.volunteerData.id)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            }
+                            if (snapshot.hasError) {
+                              return const Text('Error loading rating');
+                            }
+                            var volunteerData = snapshot.data!.data()
+                                as Map<String, dynamic>;
+                            double averageRating =
+                                volunteerData['rating'] ?? 0.0;
+
+                            // Round the average rating to 2 decimal places
+                            String formattedRating =
+                                averageRating.toStringAsFixed(2);
+
+                            return Row(
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  formattedRating, // Display the formatted rating
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.grey),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          "Major: ${widget.volunteerData['major']}",
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -184,13 +225,13 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
               Positioned(
-                      left: 60,
-                      top: 80,
-                      child: IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: _showEditInfoDialog,
-                      ),
-                    ),
+                top: 20,
+                right: 20,
+                child: IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: _showEditInfoDialog,
+                ),
+              ),
             ],
           ),
           Container(
@@ -203,7 +244,6 @@ class _UserProfileState extends State<UserProfile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Divider(),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
@@ -216,14 +256,14 @@ class _UserProfileState extends State<UserProfile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "Phone Number", 
+                                  "Phone Number",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  "+962 ${widget.userData['phoneNumber']}",
+                                  "+962 ${widget.volunteerData['phoneNumber']}",
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.grey[600]),
                                 ),
@@ -246,14 +286,14 @@ class _UserProfileState extends State<UserProfile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "Email", 
+                                  "Email",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  "${widget.userData['email']}",
+                                  "${widget.volunteerData['email']}",
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.grey[600]),
                                 ),
@@ -264,53 +304,6 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: Card(
-              elevation: 30,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push<void>(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          const HelpHistory(),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.access_time,
-                          color: Theme.of(context).colorScheme.primary),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "History",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Review your history",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.grey[600]),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),

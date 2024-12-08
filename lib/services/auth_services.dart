@@ -46,6 +46,9 @@ void saveUserData(String id, Map<String, dynamic> data, String userType) async {
   if (userType == 'specialNeed') {
     await fireStore.collection('specialNeeds').doc(id).set(data);
   } else if (userType == 'volunteer') {
+    // Initialize the rating for new volunteers
+    data['rating'] = 0.0; 
+    data['numberOfRatings'] = 0;
     await fireStore.collection('volunteers').doc(id).set(data);
   }
 }

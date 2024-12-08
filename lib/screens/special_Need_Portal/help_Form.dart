@@ -6,6 +6,7 @@ import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 import 'package:awn/services/entity_management_services.dart'
     as entity_services;
 import 'package:awn/widgets/custom_dropdown_button.dart';
+import 'package:awn/widgets/custom_Dropdown_Button_major.dart';
 import 'package:awn/widgets/custom_text_field.dart';
 import 'package:awn/widgets/location_input.dart';
 
@@ -27,8 +28,10 @@ class _HelpFormState extends State<HelpForm> {
   double? longitude;
   double? currentLatitude;
   double? currentLongitude;
-  final GlobalKey<LocationInputState> _locationInputKey = GlobalKey();
+  final GlobalKey<LocationInputState> _locationInputKey = GlobalKey<LocationInputState>();
   bool _isLoading = false;
+  bool _showMajorDropdown = false;
+  String? _selectedMajor;
 
   void _unfocusTextFields() {
     _focusScopeNode.unfocus();
@@ -64,6 +67,8 @@ class _HelpFormState extends State<HelpForm> {
       _selectedDate = DateTime.now();
       latitude = currentLatitude;
       longitude = currentLongitude;
+      _showMajorDropdown = false;
+      _selectedMajor = null;
     });
   }
 
@@ -82,6 +87,7 @@ class _HelpFormState extends State<HelpForm> {
         longitude!,
         _selectedDate,
         context,
+        _selectedMajor,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -106,7 +112,7 @@ class _HelpFormState extends State<HelpForm> {
       onTap: _unfocusTextFields,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("AWN"), // Changed from translate("appName")
+          title: const Text("AWN"),
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
         body: FocusScope(
@@ -123,7 +129,7 @@ class _HelpFormState extends State<HelpForm> {
                   child: SingleChildScrollView(
                     child: Form(
                       key: _formKey,
-                     child: Column(
+                      child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CustomDropdownButton(
@@ -135,16 +141,53 @@ class _HelpFormState extends State<HelpForm> {
                           CustomTextFormField(
                             controller: _descriptionController,
                             labelText: "Description",
-                            hintText: "describe what have you lost", 
+                            hintText: "describe your help request",
                             prefixIcon: Icons.description_outlined,
                             isUser: true,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "describe what have you lost"; // Changed from translate("DescriptionHint")
+                                return "describe your help request";
                               }
                               return null;
                             },
                           ),
+                          const SizedBox(height: 16),
+                          // Question about major preference
+                          const Text("Do you want a specific major?"),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showMajorDropdown = true;
+                                  });
+                                },
+                                child: const Text("Yes"),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showMajorDropdown = false;
+                                    _selectedMajor = null;
+                                  });
+                                },
+                                child: const Text("No"),
+                              ),
+                            ],
+                          ),
+                          // Major selection DropdownButton
+                          if (_showMajorDropdown)
+                            CustomDropdownButtonMajor(
+                              controller: TextEditingController(),
+                              selectedMajor: _selectedMajor,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _selectedMajor = newValue;
+                                });
+                              },
+                            ),
                           const SizedBox(height: 16),
                           Container(
                             padding: const EdgeInsets.all(5),
@@ -205,14 +248,22 @@ class _HelpFormState extends State<HelpForm> {
                                       );
                                     },
                                     initTime: _selectedDate,
-                                    minTime: DateTime.now(),
+                                    minTime: DateTime.now().subtract(
+                                      const Duration(days: 1)
+                                    ),
                                     barrierColor: Theme.of(context)
                                         .colorScheme
                                         .primary
                                         .withOpacity(0.1),
                                     onChange: (dateTime) {
                                       setState(() {
-                                        _selectedDate = dateTime;
+                                        _selectedDate = DateTime(
+                                          dateTime.year,
+                                          dateTime.month,
+                                          dateTime.day,
+                                          _selectedDate.hour,
+                                          _selectedDate.minute,
+                                        );
                                       });
                                     },
                                   ),
@@ -250,12 +301,12 @@ class _HelpFormState extends State<HelpForm> {
                                 },
                                 child: _isLoading
                                     ? const CircularProgressIndicator()
-                                    : Text("Submit"), // Changed from translate("Submit")
+                                    : const Text("Submit"),
                               ),
                               const SizedBox(width: 32),
                               ElevatedButton(
                                 onPressed: _clearForm,
-                                child: Text("Clear"), // Changed from translate("Clear")
+                                child: const Text("Clear"),
                               ),
                             ],
                           ),

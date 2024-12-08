@@ -4,8 +4,8 @@ import 'package:awn/firebase_options.dart';
 import 'package:awn/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
-import 'package:awn/screens/specialNeedPortal/home.dart' as specialNeed;
-import 'package:awn/screens/volunteerPortal/home.dart' as volunteer; 
+import 'package:awn/screens/special_Need_Portal/home.dart' as specialNeed;
+import 'package:awn/screens/volunteer_Portal/home.dart' as volunteer; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

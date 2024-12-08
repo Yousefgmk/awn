@@ -4,6 +4,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/widgets/custom_text_field.dart';
+import 'package:awn/widgets/custom_Dropdown_Button_major.dart';
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -26,6 +27,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   bool isLogin = true;
   String _selectedUserType = 'specialNeed';
   int userTypeToggleSwitchIndex = 0;
+  String? _selectedMajor; // Add a variable to store the selected major
 
   void _unfocusTextFields() {
     _focusScopeNode.unfocus();
@@ -179,6 +181,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                       )
                                     ]
                                   : [
+                                      // Sign-up form fields
                                       CustomTextFormField(
                                         controller: _nameController,
                                         labelText: "Name",
@@ -269,6 +272,52 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                         prefixIcon: Icons.phone_sharp,
                                       ),
                                       const SizedBox(height: 26),
+                                      ToggleSwitch(
+                                        minWidth: 150.0,
+                                        initialLabelIndex:
+                                            userTypeToggleSwitchIndex,
+                                        cornerRadius: 17,
+                                        activeFgColor: Colors.white,
+                                        inactiveBgColor: Colors.grey,
+                                        inactiveFgColor: Colors.white,
+                                        totalSwitches: 2,
+                                        labels: const [
+                                          'special Need',
+                                          'volunteer'
+                                        ],
+                                        activeBgColors: [
+                                          [
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                          ],
+                                          const [Colors.green]
+                                        ],
+                                        onToggle: (index) {
+                                          setState(() {
+                                            if (index == 0) {
+                                              _selectedUserType =
+                                                  'specialNeed';
+                                              userTypeToggleSwitchIndex = 0;
+                                            } else {
+                                              _selectedUserType = 'volunteer';
+                                              userTypeToggleSwitchIndex = 1;
+                                            }
+                                          });
+                                        },
+                                      ),
+                                      const SizedBox(height: 26),
+                                      if (_selectedUserType == 'volunteer')
+                                        CustomDropdownButtonMajor(
+                                          controller: TextEditingController(),
+                                          selectedMajor: _selectedMajor,
+                                          onChanged: (newValue) {
+                                          setState(() {
+                                          _selectedMajor = newValue;
+                                          });
+                                          },
+                                        ),
+                                      const SizedBox(height: 26),
                                       CustomTextFormField(
                                         controller: _passwordController,
                                         labelText: "Password",
@@ -306,41 +355,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                           return null;
                                         },
                                         isPassword: true,
-                                      ),
-                                      const SizedBox(height: 26),
-                                      ToggleSwitch(
-                                        minWidth: 150.0,
-                                        initialLabelIndex:
-                                            userTypeToggleSwitchIndex,
-                                        cornerRadius: 17,
-                                        activeFgColor: Colors.white,
-                                        inactiveBgColor: Colors.grey,
-                                        inactiveFgColor: Colors.white,
-                                        totalSwitches: 2,
-                                        labels: const [
-                                          'special Need',
-                                          'volunteer'
-                                        ],
-                                        activeBgColors: [
-                                          [
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                          ],
-                                          const [Colors.green]
-                                        ],
-                                        onToggle: (index) {
-                                          setState(() {
-                                            if (index == 0) {
-                                              _selectedUserType =
-                                                  'specialNeed';
-                                              userTypeToggleSwitchIndex = 0;
-                                            } else {
-                                              _selectedUserType = 'volunteer';
-                                              userTypeToggleSwitchIndex = 1;
-                                            }
-                                          });
-                                        },
                                       ),
                                       const SizedBox(height: 20),
                                       ElevatedButton(
@@ -417,6 +431,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           context: context,
         );
       } else {
+        // Include the selected major in the data
         await auth_services.signUp(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
@@ -427,6 +442,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             'gender': _selectedGender,
             'email': _emailController.text.trim(),
             'phoneNumber': _phoneNumberController.text,
+            'major': _selectedMajor,
           },
         );
       }
