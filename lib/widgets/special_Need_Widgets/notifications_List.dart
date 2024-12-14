@@ -66,7 +66,7 @@ class _NotificationsListState extends State<NotificationsList> {
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
                   .collection('volunteers')
-                  .doc(requestData['volunteerId'])
+                  .doc(requestData['volunteerId1'])
                   .get()
                   .catchError((error) {
                 print('Error fetching volunteer data: $error');
@@ -182,14 +182,15 @@ class _NotificationsListState extends State<NotificationsList> {
                                   try {
                                     List<dynamic> rejectedIds =
                                         requestData['rejectedIds'] ?? [];
-                                    rejectedIds.add(requestData['volunteerId']);
+                                    rejectedIds
+                                        .add(requestData['volunteerId1']);
 
                                     await FirebaseFirestore.instance
                                         .collection('helpRequests')
                                         .doc(requestId)
                                         .update({
                                       'status': 'pending',
-                                      'volunteerId': null,
+                                      'volunteerId1': null,
                                       'rejectedIds': rejectedIds,
                                     });
                                   } catch (e) {
@@ -234,7 +235,7 @@ class _NotificationsListState extends State<NotificationsList> {
 
                                       await FirebaseFirestore.instance
                                           .collection('volunteers')
-                                          .doc(requestData['volunteerId'])
+                                          .doc(requestData['volunteerId1'])
                                           .update({
                                         'rating': newRating,
                                         'numberOfRatings': numberOfRatings + 1,
@@ -267,7 +268,7 @@ class _NotificationsListState extends State<NotificationsList> {
 
                                     await FirebaseFirestore.instance
                                         .collection('volunteers')
-                                        .doc(requestData['volunteerId'])
+                                        .doc(requestData['volunteerId1'])
                                         .update({'rating': currentRating});
                                   } catch (e) {
                                     print('Error marking as not completed: $e');

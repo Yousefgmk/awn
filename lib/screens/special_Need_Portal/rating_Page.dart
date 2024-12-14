@@ -9,7 +9,7 @@ class RatingPage extends StatefulWidget {
 }
 
 class _RatingPageState extends State<RatingPage> {
-  double _rating = 0; // Initial rating value
+  double _rating = 0;
 
   @override
   Widget build(BuildContext context) {

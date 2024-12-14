@@ -34,6 +34,7 @@ void submitHelpRequest(
       'status': 'pending',
       'type': type,
       'requestedMajor': major,
+      'volunteerId2': ""
     });
 
     Navigator.of(context).pop();

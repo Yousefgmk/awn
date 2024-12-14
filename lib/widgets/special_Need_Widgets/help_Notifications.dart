@@ -124,7 +124,7 @@ class HelpNotification extends StatelessWidget {
           .doc(data['requestId'])
           .update({
         'status': 'pending',
-        'rejectedVolunteers': FieldValue.arrayUnion([data['volunteerId']])
+        'rejectedVolunteers': FieldValue.arrayUnion([data['volunteerId1']])
       });
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -146,7 +146,7 @@ class HelpNotification extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (_) => RatingPage(volunteerId: data['volunteer']['id'])),
+          builder: (_) => RatingPage(volunteerId1: data['volunteer']['id'])),
     );
   }
 
@@ -162,16 +162,15 @@ class HelpNotification extends StatelessWidget {
 }
 
 class RatingPage extends StatelessWidget {
-  const RatingPage({super.key, required this.volunteerId});
-  final String volunteerId;
+  const RatingPage({super.key, required this.volunteerId1});
+  final String volunteerId1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Rate Volunteer")),
       body: Center(
-        child: Text(
-            "Rating UI for Volunteer: $volunteerId"),
+        child: Text("Rating UI for Volunteer: $volunteerId1"),
       ),
     );
   }
