@@ -46,14 +46,14 @@ class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
             'volunteerId1': requestData['volunteerId2'],
             'volunteerId2': "",
             'status': 'accepted',
-            'rejectedVolunteers': FieldValue.arrayUnion([auth_services.currentUid])
+            'rejectedIds': FieldValue.arrayUnion([auth_services.currentUid])
           });
         } else {
           // If volunteerId2 is empty, change status to pending and volunteerId1 is set to ""
           await FirebaseFirestore.instance.collection('helpRequests').doc(requestId).update({
             'volunteerId1': "",
             'status': 'pending',
-            'rejectedVolunteers': FieldValue.arrayUnion([auth_services.currentUid])
+            'rejectedIds': FieldValue.arrayUnion([auth_services.currentUid])
           });
         }
 
