@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
-import 'package:awn/services/location_services.dart' as location_services;
 import 'package:awn/services/entity_management_services.dart'
     as entity_services;
 
@@ -20,21 +19,6 @@ class HelpRequest extends StatefulWidget {
 
 class _HelpRequestState extends State<HelpRequest> {
   String? formattedAddress = '';
-
-  @override
-  void initState() {
-    super.initState();
-    location_services
-        .getFormattedAddress(
-      widget.helpRequestData['location'].latitude,
-      widget.helpRequestData['location'].longitude,
-    )
-        .then((value) {
-      setState(() {
-        formattedAddress = value;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,16 +130,14 @@ class _HelpRequestState extends State<HelpRequest> {
                       initialCameraPosition: CameraPosition(
                         target: LatLng(
                             widget.helpRequestData['location'].latitude,
-                            widget.helpRequestData['location']
-                                .longitude), // Accessing location data
+                            widget.helpRequestData['location'].longitude),
                         zoom: 12,
                       ),
                       markers: {
                         Marker(
                           markerId: const MarkerId('marker_1'),
                           position: LatLng(
-                              widget.helpRequestData['location']
-                                  .latitude, // Accessing location data
+                              widget.helpRequestData['location']  .latitude,
                               widget.helpRequestData['location'].longitude),
                         ),
                       },

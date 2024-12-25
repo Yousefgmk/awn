@@ -3,11 +3,10 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/screens/special_Need_Portal/help_Form.dart';
 import 'package:awn/widgets/special_Need_Widgets/special_Need_Profile.dart';
 import 'package:awn/widgets/special_Need_Widgets/notifications_List.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:awn/services/auth_services.dart' as auth_services;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -131,13 +130,13 @@ class _HomeState extends State<Home> {
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
           SalomonBottomBarItem(
-            icon: const Icon(Icons.home), 
+            icon: const Icon(Icons.home),
             title: const Text("Home"),
             selectedColor: Theme.of(context).colorScheme.primary,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.notifications),
-            title: const Text("Notifications"), 
+            title: const Text("Notifications"),
             selectedColor: Theme.of(context).colorScheme.primary,
           ),
           SalomonBottomBarItem(

@@ -4,11 +4,10 @@ import 'package:uuid/uuid.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;
 
-FirebaseFirestore firestore = FirebaseFirestore.instance; 
+FirebaseFirestore firestore = FirebaseFirestore.instance;
 Uuid uuid = const Uuid();
 
-Future<void> 
- deleteHelpRequest(String id) async {
+Future<void> deleteHelpRequest(String id) async {
   await firestore.collection('helpRequests').doc(id).delete();
 }
 

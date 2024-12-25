@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:awn/services/auth_services.dart' as auth_services;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:awn/screens/special_Need_Portal/Edit_HelpRequest.dart';
+import 'package:awn/services/auth_services.dart' as auth_services;
 
 class HelpHistory extends StatefulWidget {
   const HelpHistory({super.key});
@@ -176,7 +177,6 @@ class HelpRequestItem extends StatelessWidget {
                           ),
                         );
                       } catch (e) {
-                        print("Error archiving help request: $e");
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content:

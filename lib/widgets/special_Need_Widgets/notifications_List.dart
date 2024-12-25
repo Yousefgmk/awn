@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
-// Assuming you have this rating page
 import 'package:awn/screens/special_Need_Portal/rating_Page.dart';
+import 'package:awn/services/auth_services.dart' as auth_services;
 
 class NotificationsList extends StatefulWidget {
   const NotificationsList({super.key});
@@ -26,13 +25,13 @@ class _NotificationsListState extends State<NotificationsList> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(false); // If no, close the dialog
+                Navigator.of(context).pop(false);
               },
               child: const Text('No'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(true); // If yes, proceed with the reject logic
+                Navigator.of(context).pop(true);
               },
               child: const Text('Yes'),
             ),
@@ -67,7 +66,6 @@ class _NotificationsListState extends State<NotificationsList> {
           content: Text('You have rejected the help request.'),
         ));
       } catch (e) {
-        print("Error rejecting help request: $e");
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('An error occurred while rejecting. Please try again.'),
         ));
@@ -100,7 +98,6 @@ class _NotificationsListState extends State<NotificationsList> {
         await _archiveRequest(requestId, requestData, 'completed');
       }
     } catch (e) {
-      print('Error completing request: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Failed to complete. Please try again.'),
@@ -124,7 +121,6 @@ class _NotificationsListState extends State<NotificationsList> {
       // Move the request to 'archivedRequests' collection with status 'notcompleted'
       await _archiveRequest(requestId, requestData, 'notcompleted');
     } catch (e) {
-      print('Error marking as not completed: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Failed to update. Please try again.'),
@@ -149,7 +145,6 @@ class _NotificationsListState extends State<NotificationsList> {
         content: Text('Request marked as $status and archived.'),
       ));
     } catch (e) {
-      print('Error archiving request: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Failed to archive request. Please try again.'),
@@ -204,15 +199,12 @@ class _NotificationsListState extends State<NotificationsList> {
             Map<String, dynamic> requestData =
             request.data() as Map<String, dynamic>;
 
-            print('Request data: ${request.data()}');
-
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
                   .collection('volunteers')
                   .doc(requestData['volunteerId1'])
                   .get()
                   .catchError((error) {
-                print('Error fetching volunteer data: $error');
                 throw error;
               }),
               builder: (context, volunteerSnapshot) {
@@ -222,7 +214,6 @@ class _NotificationsListState extends State<NotificationsList> {
                 }
 
                 if (volunteerSnapshot.hasError) {
-                  print('Volunteer snapshot error: ${volunteerSnapshot.error}');
                   return ListTile(
                     title: Text(requestData['type'] ?? 'Unknown Type'),
                     subtitle: const Text('Error fetching volunteer data'),
@@ -230,7 +221,6 @@ class _NotificationsListState extends State<NotificationsList> {
                 }
 
                 if (!volunteerSnapshot.hasData) {
-                  print('No volunteer data found');
                   return ListTile(
                     title: Text(requestData['type'] ?? 'Unknown Type'),
                     subtitle: const Text('Volunteer data not found'),
@@ -239,8 +229,6 @@ class _NotificationsListState extends State<NotificationsList> {
 
                 Map<String, dynamic> volunteerData =
                 volunteerSnapshot.data!.data() as Map<String, dynamic>;
-
-                print('Volunteer data: $volunteerData');
 
                 String formattedDateTime = requestData['date'] != null
                     ? DateFormat('yyyy-MM-dd HH:mm')
@@ -305,7 +293,6 @@ class _NotificationsListState extends State<NotificationsList> {
                                         .doc(requestId)
                                         .update({'status': 'verified'});
                                   } catch (e) {
-                                    print('Error verifying request: $e');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(

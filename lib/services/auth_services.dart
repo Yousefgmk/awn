@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 var auth = FirebaseAuth.instance;
 var fireStore = FirebaseFirestore.instance;
@@ -47,7 +47,7 @@ void saveUserData(String id, Map<String, dynamic> data, String userType) async {
     await fireStore.collection('specialNeeds').doc(id).set(data);
   } else if (userType == 'volunteer') {
     // Initialize the rating for new volunteers
-    data['rating'] = 0.0; 
+    data['rating'] = 0.0;
     data['numberOfRatings'] = 0;
     await fireStore.collection('volunteers').doc(id).set(data);
   }

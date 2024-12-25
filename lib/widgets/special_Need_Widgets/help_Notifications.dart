@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:awn/services/entity_management_services.dart'
-    as entity_services;
 
 class HelpNotification extends StatelessWidget {
   const HelpNotification({super.key, required this.data, required this.id});

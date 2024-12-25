@@ -255,7 +255,6 @@ class HelpRequestItem extends StatelessWidget {
                 content: Text("Help request accepted!"),
               ));
             } catch (e) {
-              print("Error accepting help request: $e");
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text("An error occurred. Please try again.")));
             }

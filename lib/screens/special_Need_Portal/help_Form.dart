@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 
-import 'package:awn/services/entity_management_services.dart'
-    as entity_services;
 import 'package:awn/widgets/custom_dropdown_button.dart';
 import 'package:awn/widgets/custom_Dropdown_Button_major.dart';
 import 'package:awn/widgets/custom_text_field.dart';
 import 'package:awn/widgets/location_input.dart';
+import 'package:awn/services/entity_management_services.dart' as entity_services;
 
 class HelpForm extends StatefulWidget {
   const HelpForm({super.key});
@@ -28,7 +26,8 @@ class _HelpFormState extends State<HelpForm> {
   double? longitude;
   double? currentLatitude;
   double? currentLongitude;
-  final GlobalKey<LocationInputState> _locationInputKey = GlobalKey<LocationInputState>();
+  final GlobalKey<LocationInputState> _locationInputKey =
+      GlobalKey<LocationInputState>();
   bool _isLoading = false;
   bool _showMajorDropdown = false;
   String? _selectedMajor;
@@ -248,9 +247,8 @@ class _HelpFormState extends State<HelpForm> {
                                       );
                                     },
                                     initTime: _selectedDate,
-                                    minTime: DateTime.now().subtract(
-                                      const Duration(days: 1)
-                                    ),
+                                    minTime: DateTime.now()
+                                        .subtract(const Duration(hours: 1)),
                                     barrierColor: Theme.of(context)
                                         .colorScheme
                                         .primary

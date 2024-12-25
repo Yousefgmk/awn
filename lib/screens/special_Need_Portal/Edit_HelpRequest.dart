@@ -10,11 +10,11 @@ class EditHelpRequestPage extends StatefulWidget {
   final TimeOfDay initialTime;
 
   const EditHelpRequestPage({
-    Key? key,
+    super.key,
     required this.initialLocation,
     required this.initialDate,
     required this.initialTime,
-  }) : super(key: key);
+  });
 
   @override
   State<EditHelpRequestPage> createState() => _EditHelpRequestPageState();
@@ -122,8 +122,8 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
                                 );
                               },
                               initTime: _selectedDate,
-                              minTime: DateTime.now().subtract(
-                                  const Duration(days: 1)),
+                              minTime: DateTime.now()
+                                  .subtract(const Duration(days: 1)),
                               barrierColor: Theme.of(context)
                                   .colorScheme
                                   .primary
@@ -162,8 +162,7 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
                             onTap: _updateLocation,
                             markers: {
                               Marker(
-                                markerId:
-                                    const MarkerId("helpRequestLocation"),
+                                markerId: const MarkerId("helpRequestLocation"),
                                 position: _location,
                               ),
                             },
@@ -174,9 +173,9 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
                       ElevatedButton(
                         onPressed: () async {
                           try {
-                            final requestId =
-                                ModalRoute.of(context)!.settings.arguments
-                                    as String;
+                            final requestId = ModalRoute.of(context)!
+                                .settings
+                                .arguments as String;
 
                             await FirebaseFirestore.instance
                                 .collection('helpRequests')
@@ -191,13 +190,11 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(
-                                    'Request updated successfully!'),
+                                content: Text('Request updated successfully!'),
                               ),
                             );
                             Navigator.pop(context);
                           } catch (e) {
-                            print('Error updating request: $e');
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content:

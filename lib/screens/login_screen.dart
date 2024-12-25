@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:awn/services/auth_services.dart' as auth_services;
+
 import 'package:awn/widgets/custom_text_field.dart';
 import 'package:awn/widgets/custom_Dropdown_Button_major.dart';
+import 'package:awn/services/auth_services.dart' as auth_services;
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -27,7 +28,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   bool isLogin = true;
   String _selectedUserType = 'specialNeed';
   int userTypeToggleSwitchIndex = 0;
-  String? _selectedMajor; // Add a variable to store the selected major
+  String? _selectedMajor;
 
   void _unfocusTextFields() {
     _focusScopeNode.unfocus();
@@ -431,7 +432,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           context: context,
         );
       } else {
-        // Include the selected major in the data
         await auth_services.signUp(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),

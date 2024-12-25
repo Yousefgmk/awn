@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;

@@ -61,7 +61,6 @@ class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
           content: Text('You have withdrawn from the help request.'),
         ));
       } catch (e) {
-        print("Error withdrawing from help request: $e");
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('An error occurred while withdrawing. Please try again.'),
         ));
@@ -115,8 +114,6 @@ class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
             String requestId = request.id;
             Map<String, dynamic> requestData =
                 request.data() as Map<String, dynamic>;
-
-            print('Request data: ${request.data()}');
 
             String formattedDateTime = requestData['date'] != null
                 ? DateFormat('yyyy-MM-dd HH:mm').format(

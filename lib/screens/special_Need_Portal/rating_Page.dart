@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class RatingPage extends StatefulWidget {
-  const RatingPage({Key? key}) : super(key: key);
+  const RatingPage({super.key});
 
   @override
   State<RatingPage> createState() => _RatingPageState();
@@ -30,7 +30,7 @@ class _RatingPageState extends State<RatingPage> {
               initialRating: _rating,
               minRating: 1,
               direction: Axis.horizontal,
-              allowHalfRating: true, // Change to true if you want to allow half ratings
+              allowHalfRating: true,
               itemCount: 5,
               itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
               itemBuilder: (context, _) => const Icon(
