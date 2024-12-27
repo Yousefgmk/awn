@@ -15,7 +15,11 @@ class _RatingPageState extends State<RatingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rate the Volunteer'),
+        title: const Text(
+          'Rate the Volunteer',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Center(
         child: Column(
@@ -47,9 +51,12 @@ class _RatingPageState extends State<RatingPage> {
             ElevatedButton(
               onPressed: () {
                 // Return the rating to the previous screen
-                Navigator.pop(context, _rating.toInt());
+                Navigator.pop(context, _rating.toDouble());
               },
-              child: const Text('Submit Rating'),
+              child: const Text(
+                'Submit Rating',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),

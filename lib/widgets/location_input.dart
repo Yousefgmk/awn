@@ -173,7 +173,7 @@ class _MapDialogState extends State<MapDialog> {
     _mapController!.animateCamera(
       CameraUpdate.newLatLngZoom(
         LatLng(latitude, longitude),
-        16,
+        18,
       ),
     );
   }
@@ -201,7 +201,7 @@ class _MapDialogState extends State<MapDialog> {
             },
             initialCameraPosition: CameraPosition(
               target: LatLng(latitude, longitude),
-              zoom: 16,
+              zoom: 18,
             ),
             markers: _activeMarker != null
                 ? {

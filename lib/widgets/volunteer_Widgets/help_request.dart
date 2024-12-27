@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;
 
-class HelpRequestItem extends StatelessWidget {
+class HelpRequest extends StatelessWidget {
   final QueryDocumentSnapshot request;
 
-  const HelpRequestItem({
+  const HelpRequest({
     super.key,
     required this.request,
   });

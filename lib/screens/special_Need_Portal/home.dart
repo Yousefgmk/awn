@@ -3,9 +3,9 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import 'package:awn/screens/special_Need_Portal/help_Form.dart';
-import 'package:awn/widgets/special_Need_Widgets/special_Need_Profile.dart';
-import 'package:awn/widgets/special_Need_Widgets/notifications_List.dart';
+import 'package:awn/screens/special_Need_Portal/help_form.dart';
+import 'package:awn/widgets/special_Need_Widgets/special_need_profile.dart';
+import 'package:awn/widgets/special_Need_Widgets/active_help_requests_list.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 
 class Home extends StatefulWidget {
@@ -37,46 +37,52 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     Widget activePage = Center(
       child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: userData != null
-              ? [
-                  Text(
-                    'Hello ${userData!['name']}\nhow can we help you today?',
-                    style: const TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
+        mainAxisSize: MainAxisSize.min,
+        children: userData != null
+            ? [
+                Text(
+                  'Hello ${userData!['name']}\nhow can we help you today?',
+                  style: const TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 50),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const HelpForm()));
+                  },
+                  label: const Text(
+                    "I need help with something",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  const SizedBox(height: 50),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const HelpForm()));
-                    },
-                    label: const Text(
-                      "I need help with something",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    icon: const Icon(Symbols.person_raised_hand),
-                  ),
-                  const SizedBox(height: 30),
-                ]
-              : [const CircularProgressIndicator()]),
+                  icon: const Icon(Symbols.person_raised_hand),
+                ),
+                const SizedBox(height: 30),
+              ]
+            : [
+                const CircularProgressIndicator(),
+              ],
+      ),
     );
 
     if (_currentIndex == 1) {
-      activePage = const NotificationsList();
+      activePage = const ActiveHelpRequests();
     } else if (_currentIndex == 2) {
-      activePage = UserProfile(userData: userData!);
+      activePage = SpecialNeedProfile(userData: userData!);
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("AWN"),
+        title: const Text(
+          "AWN",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: Icon(
               Icons.exit_to_app,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
               showDialog(
@@ -135,8 +141,8 @@ class _HomeState extends State<Home> {
             selectedColor: Theme.of(context).colorScheme.primary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.notifications),
-            title: const Text("Notifications"),
+            icon: const Icon(Icons.library_add_check_outlined),
+            title: const Text("Active Requests"),
             selectedColor: Theme.of(context).colorScheme.primary,
           ),
           SalomonBottomBarItem(

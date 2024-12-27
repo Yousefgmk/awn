@@ -52,7 +52,10 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Edit Help Request"),
+          title: const Text(
+            "Edit Help Request",
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
         body: Center(
@@ -80,61 +83,64 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
                           ),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TimePickerSpinnerPopUp(
-                              mode: CupertinoDatePickerMode.dateAndTime,
-                              timeWidgetBuilder: (time) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(0.8),
-                                      width: 1.75,
+                        child: SizedBox(
+                          height: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TimePickerSpinnerPopUp(
+                                mode: CupertinoDatePickerMode.dateAndTime,
+                                timeWidgetBuilder: (time) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.8),
+                                        width: 1.75,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.calendar_today_outlined,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        "${_selectedDate.day.toString()}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.year.toString()}  ${_selectedDate.hour.toString().padLeft(2, '0')}:${_selectedDate.minute.toString().padLeft(2, '0')}",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        12, 10, 12, 10),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_today_outlined,
+                                          size: 20,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              initTime: _selectedDate,
-                              minTime: DateTime.now()
-                                  .subtract(const Duration(days: 1)),
-                              barrierColor: Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withOpacity(0.1),
-                              onChange: (dateTime) {
-                                setState(() {
-                                  _selectedDate = dateTime;
-                                });
-                              },
-                            ),
-                          ],
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          "${_selectedDate.day.toString()}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.year.toString()}  ${_selectedDate.hour.toString().padLeft(2, '0')}:${_selectedDate.minute.toString().padLeft(2, '0')}",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                initTime: _selectedDate,
+                                minTime: DateTime.now()
+                                    .subtract(const Duration(days: 1)),
+                                barrierColor: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.1),
+                                onChange: (dateTime) {
+                                  setState(() {
+                                    _selectedDate = dateTime;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -154,7 +160,7 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
                           child: GoogleMap(
                             initialCameraPosition: CameraPosition(
                               target: _location,
-                              zoom: 14.0,
+                              zoom: 18.0,
                             ),
                             onMapCreated: (GoogleMapController controller) {
                               _mapController = controller;
@@ -203,7 +209,12 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
                             );
                           }
                         },
-                        child: const Text("Save Changes"),
+                        child: const Text(
+                          "Save Changes",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),

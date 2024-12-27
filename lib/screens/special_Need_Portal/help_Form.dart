@@ -111,7 +111,10 @@ class _HelpFormState extends State<HelpForm> {
       onTap: _unfocusTextFields,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("AWN"),
+          title: const Text(
+            "AWN",
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
         body: FocusScope(
@@ -151,19 +154,17 @@ class _HelpFormState extends State<HelpForm> {
                           ),
                           const SizedBox(height: 16),
                           // Question about major preference
-                          const Text("Do you want a specific major?"),
+                          const Text(
+                            "Do you want a specific major?",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                           const SizedBox(height: 8),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _showMajorDropdown = true;
-                                  });
-                                },
-                                child: const Text("Yes"),
-                              ),
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
@@ -173,9 +174,18 @@ class _HelpFormState extends State<HelpForm> {
                                 },
                                 child: const Text("No"),
                               ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showMajorDropdown = true;
+                                  });
+                                },
+                                child: const Text("Yes"),
+                              ),
                             ],
                           ),
                           // Major selection DropdownButton
+                          if (_showMajorDropdown) const SizedBox(height: 16),
                           if (_showMajorDropdown)
                             CustomDropdownButtonMajor(
                               controller: TextEditingController(),
@@ -290,20 +300,29 @@ class _HelpFormState extends State<HelpForm> {
                           ),
                           const SizedBox(height: 16),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
+                              ElevatedButton(
+                                onPressed: _clearForm,
+                                child: const Text(
+                                  "Clear",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
                               ElevatedButton(
                                 onPressed: () async {
                                   await _submit();
                                 },
                                 child: _isLoading
                                     ? const CircularProgressIndicator()
-                                    : const Text("Submit"),
-                              ),
-                              const SizedBox(width: 32),
-                              ElevatedButton(
-                                onPressed: _clearForm,
-                                child: const Text("Clear"),
+                                    : const Text(
+                                        "Submit",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                               ),
                             ],
                           ),

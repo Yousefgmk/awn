@@ -66,13 +66,18 @@ class _HelpRequestsListState extends State<HelpRequestsList> {
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return const Center(
-                    child: Text(
-                      "No help requests found.",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black54,
-                      ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 270),
+                        Text(
+                          "No help requests found.",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 }
@@ -145,7 +150,7 @@ class _HelpRequestsListState extends State<HelpRequestsList> {
 
                         return Container(
                           margin: EdgeInsets.symmetric(vertical: 6),
-                          child: HelpRequestItem(
+                          child: HelpRequest(
                             request: request,
                           ),
                         );

@@ -12,8 +12,7 @@ class VolunteerProfile extends StatefulWidget {
 
 class _VolunteerProfileState extends State<VolunteerProfile> {
   final TextEditingController _newNameController = TextEditingController();
-  final TextEditingController _newPhoneNumberController =
-      TextEditingController();
+  final TextEditingController _newPhoneNumberController = TextEditingController();
 
   void _showEditInfoDialog() {
     showDialog(
@@ -190,12 +189,8 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                             }
                             var volunteerData = snapshot.data!.data()
                                 as Map<String, dynamic>;
-                            double averageRating =
+                            double rating =
                                 volunteerData['rating'] ?? 0.0;
-
-                            // Round the average rating to 2 decimal places
-                            String formattedRating =
-                                averageRating.toStringAsFixed(2);
 
                             return Row(
                               children: [
@@ -205,7 +200,7 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  formattedRating, // Display the formatted rating
+                                  rating.toStringAsFixed(2),
                                   style: const TextStyle(
                                       fontSize: 16, color: Colors.grey),
                                 ),
