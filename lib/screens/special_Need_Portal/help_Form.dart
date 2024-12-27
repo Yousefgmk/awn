@@ -142,7 +142,6 @@ class _HelpFormState extends State<HelpForm> {
                             labelText: "Description",
                             hintText: "describe your help request",
                             prefixIcon: Icons.description_outlined,
-                            isUser: true,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "describe your help request";

@@ -19,13 +19,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   final FocusScopeNode _focusScopeNode = FocusScopeNode();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  bool isLogin = true;
   String _selectedGender = "Male";
   int genderToggleSwitchIndex = 0;
-  bool isLogin = true;
   String _selectedUserType = 'specialNeed';
   int userTypeToggleSwitchIndex = 0;
   String? _selectedMajor;
@@ -52,8 +51,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
+          centerTitle: true,
           title: Text(
             isLogin ? "Login Page" : "Sign Up Page",
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: FocusScope(
@@ -93,9 +94,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                   ? [
                                       CustomTextFormField(
                                         controller: _emailController,
-                                        labelText: "Email",
-                                        hintText: 'example@domain.com',
-                                        isUser: true,
+                                        labelText: "University Email",
+                                        hintText: 'xxxxxxxxxx@ju.edu.jo',
                                         isPassword: false,
                                         validator: (value) {
                                           if (value == null ||
@@ -115,7 +115,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                         labelText: "Password",
                                         hintText: '',
                                         prefixIcon: Icons.lock,
-                                        isUser: true,
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty) {
@@ -145,7 +144,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                             fontSize: 18,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onSurface,
+                                                .onPrimary,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -186,8 +185,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                       CustomTextFormField(
                                         controller: _nameController,
                                         labelText: "Name",
-                                        hintText: "Choose you display name",
-                                        isUser: true,
+                                        hintText: "Choose your display name",
                                         isPassword: false,
                                         validator: (value) {
                                           if (value == null ||
@@ -219,7 +217,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                                 .colorScheme
                                                 .primary
                                           ],
-                                          const [Colors.pink]
+                                          [
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                          ]
                                         ],
                                         onToggle: (index) {
                                           setState(() {
@@ -236,9 +238,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                       const SizedBox(height: 26),
                                       CustomTextFormField(
                                         controller: _emailController,
-                                        labelText: "Email",
-                                        hintText: 'example@domain.com',
-                                        isUser: true,
+                                        labelText: "University Email",
+                                        hintText: 'xxxxxxxxxx@ju.edu.jo',
                                         isPassword: false,
                                         validator: (value) {
                                           if (value == null ||
@@ -257,7 +258,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                         controller: _phoneNumberController,
                                         labelText: "Phone Number",
                                         hintText: '7xxxxxxxx',
-                                        isUser: true,
                                         isPassword: false,
                                         validator: (value) {
                                           if (value == null ||
@@ -283,8 +283,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                         inactiveFgColor: Colors.white,
                                         totalSwitches: 2,
                                         labels: const [
-                                          'special Need',
-                                          'volunteer'
+                                          'Special Need',
+                                          'Volunteer'
                                         ],
                                         activeBgColors: [
                                           [
@@ -292,7 +292,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                                 .colorScheme
                                                 .primary
                                           ],
-                                          const [Colors.green]
+                                          [
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                          ]
                                         ],
                                         onToggle: (index) {
                                           setState(() {
@@ -318,13 +322,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                           });
                                           },
                                         ),
+                                      if (_selectedUserType == 'volunteer')
                                       const SizedBox(height: 26),
                                       CustomTextFormField(
                                         controller: _passwordController,
                                         labelText: "Password",
                                         hintText: "Create a strong password",
                                         prefixIcon: Icons.lock,
-                                        isUser: true,
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty) {
@@ -343,7 +347,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                         labelText: "Confirm password",
                                         hintText: "Enter your password again",
                                         prefixIcon: Icons.lock,
-                                        isUser: true,
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty) {
@@ -351,7 +354,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                           }
                                           if (value !=
                                               _passwordController.text) {
-                                            return "Wrong Password";
+                                            return "Passwords don't match";
                                           }
                                           return null;
                                         },
@@ -374,7 +377,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                             fontSize: 18,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onSurface,
+                                                .onPrimary,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -387,7 +390,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                                           Text(
                                             isLogin
                                                 ? "don't have an account?"
-                                                : "already has an account?",
+                                                : "already have an account?",
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),

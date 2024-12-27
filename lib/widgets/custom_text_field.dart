@@ -6,7 +6,6 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final IconData prefixIcon;
   final bool isPassword;
-  final bool isUser;
   final String? Function(String?) validator;
 
   const CustomTextFormField({
@@ -15,7 +14,6 @@ class CustomTextFormField extends StatelessWidget {
     required this.labelText,
     required this.hintText,
     required this.prefixIcon,
-    required this.isUser,
     required this.validator,
     this.isPassword = false,
   });
@@ -31,16 +29,12 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(
-            color: isUser
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           hintText: hintText,
           prefixIcon: Icon(
             prefixIcon,
-            color: isUser
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 10,
@@ -58,9 +52,7 @@ class CustomTextFormField extends StatelessWidget {
             gapPadding: 0.0,
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(
-              color: isUser
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
               width: 1.5,
             ),
           ),

@@ -26,10 +26,10 @@ class LocationInputState extends State<LocationInput> {
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
+    _initializeLocation();
   }
 
-  Future<void> _getCurrentLocation() async {
+  Future<void> _initializeLocation() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: Duration(seconds: 60),
@@ -42,7 +42,6 @@ class LocationInputState extends State<LocationInput> {
 
     bool serviceEnabled;
     PermissionStatus permissionGranted;
-    LocationData locationData;
 
     serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -60,11 +59,9 @@ class LocationInputState extends State<LocationInput> {
       }
     }
 
-    locationData = await location.getLocation();
-
     setState(() {
-      latitude = locationData.latitude;
-      longitude = locationData.longitude;
+      latitude = 32.01636730998997;
+      longitude = 35.87070441881691;
       _activeMarker = Marker(
         markerId: const MarkerId('selectedLocation'),
         position: LatLng(latitude!, longitude!),
@@ -75,7 +72,7 @@ class LocationInputState extends State<LocationInput> {
   }
 
   String get locationImage {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=16&size=600x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=$googleMapsApiKey';
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=18&size=600x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=$googleMapsApiKey';
   }
 
   void _selectLocation(BuildContext context) {
@@ -114,7 +111,7 @@ class LocationInputState extends State<LocationInput> {
   }
 
   void refreshLocation() {
-    _getCurrentLocation();
+    _initializeLocation();
   }
 
   @override

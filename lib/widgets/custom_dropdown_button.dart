@@ -12,14 +12,12 @@ class CustomDropdownButton extends StatefulWidget {
     super.key,
     required this.controller,
     required this.selectedDropDownValue,
-    this.isUser = true,
     this.isFilter = false,
     required this.onChanged,
   });
 
   final TextEditingController controller;
   String? selectedDropDownValue;
-  final bool isUser;
   final bool isFilter;
   final Function(String?) onChanged;
 
@@ -38,18 +36,18 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             const Icon(
               Icons.list,
               size: 16,
-              color: Colors.black,
+              color: Colors.white,
             ),
             const SizedBox(
               width: 4,
             ),
             Expanded(
               child: Text(
-                widget.isFilter ? 'filter' : 'category',
+                widget.isFilter ? 'Filter' : 'Category',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -60,9 +58,10 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             .map((category) => DropdownMenuItem<String>(
                   value: category,
                   child: Text(
-                    category, // Directly use the category string here
+                    category,
                     style: const TextStyle(
                       fontSize: 14,
+                      color: Colors.white,
                     ),
                   ),
                 ))
@@ -83,9 +82,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             border: Border.all(
               color: Colors.black26,
             ),
-            color: widget.isUser
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           elevation: 2,
         ),
@@ -94,7 +91,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             Icons.arrow_forward_ios_outlined,
           ),
           iconSize: 14,
-          iconEnabledColor: Colors.black,
+          iconEnabledColor: Colors.white,
           iconDisabledColor: Colors.grey,
         ),
         dropdownStyleData: DropdownStyleData(
@@ -102,9 +99,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
           width: 200,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: widget.isUser
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           offset: const Offset(-20, 0),
           scrollbarTheme: ScrollbarThemeData(
@@ -132,16 +127,30 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
               expands: true,
               maxLines: null,
               controller: widget.controller,
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 isDense: true,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 8,
                 ),
-                hintText: "Search", // Changed from translate("Search")
-                hintStyle: const TextStyle(fontSize: 12),
+                hintText: "Search",
+                hintStyle: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.white),
                 ),
               ),
             ),

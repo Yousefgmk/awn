@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 const colorScheme = ColorScheme(
   brightness: Brightness.light,
-  primary: Color.fromARGB(255, 63, 136, 197),
+  primary: Color.fromARGB(255, 0, 128, 128),
   secondary: Color.fromARGB(255, 19, 111, 99),
   onPrimary: Color.fromARGB(255, 255, 255, 255),
   onSecondary: Color.fromARGB(255, 255, 255, 255),

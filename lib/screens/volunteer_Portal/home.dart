@@ -44,13 +44,16 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("AWN"),
+        title: const Text(
+          "AWN",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: Icon(
               Icons.exit_to_app,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
               showDialog(
@@ -109,8 +112,8 @@ class _HomeState extends State<Home> {
             selectedColor: Theme.of(context).colorScheme.primary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.notifications),
-            title: const Text("Notifications"),
+            icon: const Icon(Icons.library_add_check_outlined),
+            title: const Text("Verified Requests"),
             selectedColor: Theme.of(context).colorScheme.primary,
           ),
           SalomonBottomBarItem(

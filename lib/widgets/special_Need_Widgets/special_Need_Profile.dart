@@ -121,7 +121,7 @@ class _UserProfileState extends State<UserProfile> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                "Confirm", // Changed from translate("Confirm")
+                "Confirm",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,

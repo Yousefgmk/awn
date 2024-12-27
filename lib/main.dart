@@ -7,6 +7,7 @@ import 'package:awn/screens/login_screen.dart';
 import 'package:awn/screens/volunteer_Portal/home.dart' as volunteer;
 import 'package:awn/screens/special_Need_Portal/home.dart' as special_need;
 import 'package:awn/services/auth_services.dart' as auth_services;
+import 'package:awn/theme.dart' as custom_theme;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,11 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "AWN",
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 45, 231, 8)),
-        useMaterial3: true,
-      ),
+      theme: custom_theme.theme,
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: auth_services.auth.authStateChanges(),

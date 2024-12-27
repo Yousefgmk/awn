@@ -215,7 +215,7 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "Major: ${widget.volunteerData['major']}",
+                          "Requests Completed: ${widget.volunteerData['numberOfRatings']}",
                           style: const TextStyle(
                               fontSize: 16, color: Colors.grey),
                         ),
@@ -248,6 +248,66 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         children: [
+                          Icon(Icons.email,
+                              color: Theme.of(context).colorScheme.primary),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "University Email",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  "${widget.volunteerData['email']}",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Icon(Icons.school,
+                              color: Theme.of(context).colorScheme.primary),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Major",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  widget.volunteerData['major'],
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
                           Icon(Icons.phone,
                               color: Theme.of(context).colorScheme.primary),
                           const SizedBox(width: 20),
@@ -264,36 +324,6 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                                 const SizedBox(height: 5),
                                 Text(
                                   "+962 ${widget.volunteerData['phoneNumber']}",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.email,
-                              color: Theme.of(context).colorScheme.primary),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "${widget.volunteerData['email']}",
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.grey[600]),
                                 ),
