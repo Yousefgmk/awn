@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;
+import 'package:awn/services/notification_services.dart' as notification_services;
 
 class VerifiedHelpRequest extends StatelessWidget {
   final QueryDocumentSnapshot request;
@@ -13,8 +14,11 @@ class VerifiedHelpRequest extends StatelessWidget {
     required this.request,
   });
 
-  Future<void> _handleWithdraw(String requestId,
-      Map<String, dynamic> requestData, BuildContext context) async {
+  Future<void> _handleWithdraw(
+    String requestId,
+    Map<String, dynamic> requestData,
+    BuildContext context,
+  ) async {
     bool? confirmWithdraw = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -42,8 +46,7 @@ class VerifiedHelpRequest extends StatelessWidget {
 
     if (confirmWithdraw == true) {
       try {
-        // Perform withdrawal logic
-        if (requestData['volunteerId2'] != "") {
+        if (requestData['volunteerId2'] != null && requestData['volunteerId2'] != "") {
           // If volunteerId2 exists, volunteerId1 takes volunteerId2 value and volunteerId2 is set to ""
           await FirebaseFirestore.instance
               .collection('helpRequests')
@@ -54,6 +57,12 @@ class VerifiedHelpRequest extends StatelessWidget {
             'status': 'accepted',
             'rejectedIds': FieldValue.arrayUnion([auth_services.currentUid])
           });
+          await notification_services.sendNotification(
+            requestData['specialNeedId'],
+            false,
+            "Volunteer Withdrew",
+            "A new volunteer is ready to help. Open the app to respond.",
+          );
         } else {
           // If volunteerId2 is empty, change status to pending and volunteerId1 is set to ""
           await FirebaseFirestore.instance
@@ -64,8 +73,13 @@ class VerifiedHelpRequest extends StatelessWidget {
             'status': 'pending',
             'rejectedIds': FieldValue.arrayUnion([auth_services.currentUid])
           });
+          await notification_services.sendNotification(
+            requestData['specialNeedId'],
+            false,
+            "Volunteer Withdrew",
+            "No new volunteer yet. Check the app for updates.",
+          );
         }
-
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('You have withdrawn from the help request.'),
         ));
@@ -98,7 +112,10 @@ class VerifiedHelpRequest extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(requestData['type'] ?? 'Unknown Type', style: TextStyle(fontWeight: FontWeight.bold),),
+            Text(
+              requestData['type'] ?? 'Unknown Type',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             Divider(),
           ],
         ),
@@ -124,22 +141,26 @@ class VerifiedHelpRequest extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text('Status: ${requestData['status'] ?? 'Unknown Status'}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+            Text(
+              'Status: ${requestData['status'] ?? 'Unknown Status'}',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
             // Withdraw Button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () => _handleWithdraw(requestId, requestData, context),
+                  onPressed: () =>
+                      _handleWithdraw(requestId, requestData, context),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(30),
                     ),
                     padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 24,),
+                      vertical: 12,
+                      horizontal: 24,
+                    ),
                   ),
                   child: const Text(
                     'Withdraw',

@@ -4,6 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:awn/services/notification_services.dart' as notification_services;
+
 class EditHelpRequestPage extends StatefulWidget {
   final LatLng initialLocation;
   final DateTime initialDate;
@@ -193,6 +195,18 @@ class _EditHelpRequestPageState extends State<EditHelpRequestPage> {
                               ),
                               'date': Timestamp.fromDate(_selectedDate),
                             });
+
+                            var requestData = await FirebaseFirestore.instance
+                                .collection('helpRequests')
+                                .doc(requestId).get();
+                            if(requestData['volunteerId1'] != null && requestData['volunteerId1'] != "") {
+                              await notification_services.sendNotification(
+                                requestData['volunteerId1'],
+                                true,
+                                "Request Updated",
+                                "The request details have changed. Please review.",
+                              );
+                            }
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

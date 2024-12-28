@@ -1,18 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-Uuid uuid = const Uuid();
 
 Future<void> deleteHelpRequest(String id) async {
   await firestore.collection('helpRequests').doc(id).delete();
-}
-
-Future<void> deleteNotification(String id, String collection) async {
-  await firestore.collection(collection).doc(id).delete();
 }
 
 void submitHelpRequest(

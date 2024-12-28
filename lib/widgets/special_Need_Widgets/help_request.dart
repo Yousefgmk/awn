@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:awn/screens/special_Need_Portal/edit_help_request.dart';
+import 'package:awn/services/entity_management_services.dart' as entity_services;
+import 'package:awn/services/notification_services.dart' as notification_services;
 
 class HelpRequest extends StatelessWidget {
   final QueryDocumentSnapshot request;
@@ -113,11 +115,17 @@ class HelpRequest extends StatelessWidget {
                             .collection('archivedRequests')
                             .doc(requestId)
                             .set(requestData);
+                        
+                        if(requestData['volunteerId1'] != null && requestData['volunteerId1'] != "") {
+                          await notification_services.sendNotification(
+                            requestData['volunteerId1'],
+                            true,
+                            "Request Removed",
+                            "This request has been deleted. Explore other opportunities.",
+                          );
+                        }
 
-                        await FirebaseFirestore.instance
-                            .collection('helpRequests')
-                            .doc(requestId)
-                            .delete();
+                        await entity_services.deleteHelpRequest(requestId);
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

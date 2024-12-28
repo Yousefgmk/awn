@@ -7,6 +7,7 @@ import 'package:awn/screens/special_Need_Portal/help_form.dart';
 import 'package:awn/widgets/special_Need_Widgets/special_need_profile.dart';
 import 'package:awn/widgets/special_Need_Widgets/active_help_requests_list.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
+import 'package:awn/services/notification_services.dart' as notification_services;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -31,6 +32,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _getUserData();
+    notification_services.checkNotificationPermission(context);
   }
 
   @override

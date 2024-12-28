@@ -1,8 +1,11 @@
-import 'package:awn/screens/special_Need_Portal/rating_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'package:awn/screens/special_Need_Portal/rating_page.dart';
+import 'package:awn/services/entity_management_services.dart' as entity_services;
+import 'package:awn/services/notification_services.dart' as notification_services;
 
 class ActiveHelpRequest extends StatelessWidget {
   final QueryDocumentSnapshot request;
@@ -165,10 +168,7 @@ class ActiveHelpRequest extends StatelessWidget {
           .doc(requestId)
           .set(requestData);
 
-      await FirebaseFirestore.instance
-          .collection('helpRequests')
-          .doc(requestId)
-          .delete();
+      await entity_services.deleteHelpRequest(requestId);
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Request marked as $status and archived.'),
@@ -296,6 +296,12 @@ class ActiveHelpRequest extends StatelessWidget {
                                 .collection('helpRequests')
                                 .doc(requestId)
                                 .update({'status': 'verified'});
+                            await notification_services.sendNotification(
+                              requestData['volunteerId1'],
+                              true,
+                              "You're Assigned",
+                              "The request owner has accepted your help. Thank you!",
+                            );
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

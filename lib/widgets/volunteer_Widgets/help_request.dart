@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;
+import 'package:awn/services/notification_services.dart' as notification_services;
 
 class HelpRequest extends StatelessWidget {
   final QueryDocumentSnapshot request;
@@ -38,7 +39,10 @@ class HelpRequest extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(requestData['type'] ?? 'Unknown Type', style: TextStyle(fontWeight: FontWeight.bold),),
+            Text(
+              requestData['type'] ?? 'Unknown Type',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             Divider(),
           ],
         ),
@@ -90,6 +94,12 @@ class HelpRequest extends StatelessWidget {
                   'volunteerId1': auth_services.currentUid,
                   'volunteerId2': ""
                 });
+                await notification_services.sendNotification(
+                  requestData['specialNeedId'],
+                  false,
+                  "Request Accepted",
+                  "A volunteer has accepted your request. Open the app to respond.",
+                );
               } else {
                 await FirebaseFirestore.instance
                     .collection('helpRequests')
@@ -106,7 +116,10 @@ class HelpRequest extends StatelessWidget {
                   content: Text("An error occurred. Please try again.")));
             }
           },
-          child: const Text("Accept", style: TextStyle(fontWeight: FontWeight.bold),),
+          child: const Text(
+            "Accept",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );

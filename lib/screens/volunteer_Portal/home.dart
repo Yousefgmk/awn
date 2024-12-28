@@ -6,6 +6,7 @@ import 'package:awn/widgets/volunteer_Widgets/volunteer_profile.dart';
 import 'package:awn/widgets/volunteer_Widgets/help_requests_list.dart';
 import 'package:awn/widgets/volunteer_Widgets/verified_help_requests_list.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
+import 'package:awn/services/notification_services.dart' as notification_services;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -30,6 +31,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _getVolunteerData();
+    notification_services.checkNotificationPermission(context);
   }
 
   @override

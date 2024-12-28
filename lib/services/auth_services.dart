@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:awn/services/notification_services.dart' as notification_services;
+import 'package:awn/services/auth_services.dart' as auth_services;
+
 var auth = FirebaseAuth.instance;
 var fireStore = FirebaseFirestore.instance;
+
+bool isVolunteer = true;
 
 String get currentUid {
   return auth.currentUser!.uid;
@@ -17,6 +22,22 @@ Future<void> signIn({
   try {
     UserCredential userData =
         await auth.signInWithEmailAndPassword(email: email, password: password);
+        DocumentSnapshot specialNeedsDoc = await FirebaseFirestore.instance
+        .collection('specialNeeds')
+        .doc(userData.user!.uid)
+        .get();
+    DocumentSnapshot volunteerDoc = await FirebaseFirestore.instance
+        .collection('volunteers')
+        .doc(userData.user!.uid)
+        .get();
+
+    if (specialNeedsDoc.exists) {
+      auth_services.isVolunteer = false;
+    }
+    if (volunteerDoc.exists) {
+      auth_services.isVolunteer = true;
+    }
+    notification_services.checkUserToken(userData.user!.uid, isVolunteer);
   } on FirebaseAuthException catch (e) {
     _handleAuthErrors(e, context);
   }
@@ -45,11 +66,13 @@ Future<void> signUp({
 void saveUserData(String id, Map<String, dynamic> data, String userType) async {
   if (userType == 'specialNeed') {
     await fireStore.collection('specialNeeds').doc(id).set(data);
+    await notification_services.saveUserToken(id, false);
   } else if (userType == 'volunteer') {
     // Initialize the rating for new volunteers
     data['rating'] = 0.0;
     data['numberOfRatings'] = 0;
     await fireStore.collection('volunteers').doc(id).set(data);
+    await notification_services.saveUserToken(id, true);
   }
 }
 

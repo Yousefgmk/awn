@@ -190,7 +190,7 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                             var volunteerData = snapshot.data!.data()
                                 as Map<String, dynamic>;
                             double rating =
-                                volunteerData['rating'] ?? 0.0;
+                                (volunteerData['rating'] ?? 0.0).toDouble();
 
                             return Row(
                               children: [
