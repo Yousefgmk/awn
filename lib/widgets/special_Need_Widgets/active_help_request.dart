@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -47,8 +47,9 @@ class ActiveHelpRequest extends StatelessWidget {
     if (confirmReject == true) {
       try {
         List<dynamic> rejectedIds = requestData['rejectedIds'] ?? [];
-        rejectedIds.add(
-            requestData['volunteerId1']); // Add volunteerId1 to rejected list
+        rejectedIds.add(// Add volunteerId1 to rejected list
+          requestData['volunteerId1'],
+        ); 
 
         if (requestData['volunteerId2'] != null &&
             requestData['volunteerId2'] != "") {
@@ -131,13 +132,11 @@ class ActiveHelpRequest extends StatelessWidget {
     BuildContext context,
   ) async {
     try {
-      // Calculate new rating (reduce by 2, but ensure it doesn't go below 0)
       double currentRating = volunteerData['rating'] ?? 0;
       int numberOfRatings = volunteerData['numberOfRatings'] ?? 0;
-      double newRating = (currentRating * numberOfRatings - 2) /
-          (numberOfRatings + 1); // Apply the formula
-      newRating =
-          newRating.clamp(0.0, 5.0); // Ensure rating stays within 0-5 range
+      double newRating =
+          (currentRating * numberOfRatings - 2) / (numberOfRatings);
+      newRating = newRating.clamp(0.0, 5.0);
 
       await FirebaseFirestore.instance
           .collection('volunteers')
@@ -186,6 +185,7 @@ class ActiveHelpRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     String requestId = request.id;
     Map<String, dynamic> requestData = request.data() as Map<String, dynamic>;
+    
     return FutureBuilder<DocumentSnapshot>(
       future: FirebaseFirestore.instance
           .collection('volunteers')
@@ -220,6 +220,8 @@ class ActiveHelpRequest extends StatelessWidget {
             ? DateFormat('yyyy-MM-dd HH:mm')
                 .format((requestData['date'] as Timestamp).toDate())
             : 'Unknown Date';
+
+        String rating = volunteerData['rating'] == 0 ? 'Not Rated' : volunteerData['rating'].toStringAsFixed(2);
 
         LatLng location = LatLng(
           requestData['location'].latitude,
@@ -269,8 +271,7 @@ class ActiveHelpRequest extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text('Volunteer Name: ${volunteerData['name']}'),
                     Text('Volunteer Phone: ${volunteerData['phoneNumber']}'),
-                    Text(
-                        'Volunteer Rating: ${volunteerData['rating'].toStringAsFixed(2) ?? 'Not Rated'}'),
+                    Text('Volunteer Rating: $rating'),
                   ],
                 ),
               ),

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -71,9 +71,6 @@ class HelpRequest extends StatelessWidget {
                     },
                   ),
                 ),
-                // const SizedBox(height: 12),
-                // if (requestData['volunteerId1'] != null)
-                //   Text('Volunteer ID: ${requestData['volunteerId1']}'),
               ],
             ),
           ),

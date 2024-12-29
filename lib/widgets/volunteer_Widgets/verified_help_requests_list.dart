@@ -1,6 +1,7 @@
-import 'package:awn/widgets/volunteer_Widgets/verified_help_request.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:awn/widgets/volunteer_widgets/verified_help_request.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 
 class VerifiedHelpRequests extends StatefulWidget {
@@ -47,7 +48,7 @@ class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
                   return const Center(
                     child: Column(
                       children: [
-                        SizedBox(height: 340,),
+                        SizedBox(height: 330),
                         Text(
                           "No verified help requests found",
                           style: TextStyle(

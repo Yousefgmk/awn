@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:awn/widgets/custom_dropdown_button.dart';
-import 'package:awn/widgets/volunteer_Widgets/help_request.dart';
+import 'package:awn/widgets/volunteer_widgets/help_request.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 
 class HelpRequestsList extends StatefulWidget {
@@ -111,51 +111,66 @@ class _HelpRequestsListState extends State<HelpRequestsList> {
                     String volunteerId1 = volunteerSnapshot.data!.id;
                     String volunteerMajor = volunteerSnapshot.data!['major'];
 
-                    List<QueryDocumentSnapshot> allRequests = snapshot.data!.docs;
+                    List<QueryDocumentSnapshot> allRequests =
+                        snapshot.data!.docs;
 
                     // Filter requests based on additional conditions
                     List<QueryDocumentSnapshot> filteredRequests =
-                      allRequests.where((request) {
+                        allRequests.where((request) {
+                      Map<String, dynamic> requestData =
+                          request.data() as Map<String, dynamic>;
+                      List<dynamic> rejectedIds =
+                          requestData['rejectedIds'] ?? [];
 
-                        Map<String, dynamic> requestData = request.data() as Map<String, dynamic>;
-                        List<dynamic> rejectedIds = requestData['rejectedIds'] ?? [];
+                      if (rejectedIds.contains(volunteerId1)) {
+                        return false;
+                      } else if (requestData['requestedMajor'] != null &&
+                          requestData['requestedMajor'] != volunteerMajor) {
+                        return false;
+                      } else if ((requestData['status'] == 'accepted' ||
+                              requestData['status'] == 'verified') &&
+                          requestData['volunteerId1'] ==
+                              auth_services.currentUid) {
+                        return false;
+                      } else if (_selectedTypeFilter != null &&
+                          requestData['type'] != _selectedTypeFilter) {
+                        return false;
+                      }
 
-                        if (rejectedIds.contains(volunteerId1)) {
-                          return false;
-                        }
-                        else if (requestData['requestedMajor'] != volunteerMajor &&
-                            requestData['requestedMajor'] != null) {
-                          return false;
-                        }
-                        else if ((requestData['status'] == 'accepted' ||
-                                requestData['status'] == 'verified') &&
-                            requestData['volunteerId1'] ==
-                                auth_services.currentUid) {
-                          return false;
-                        }
-                        else if (_selectedTypeFilter != null &&
-                            requestData['type'] != _selectedTypeFilter) {
-                          return false;
-                        }
+                      return true;
+                    }).toList();
 
-                        return true;
-                      }).toList();
+                    return filteredRequests.isEmpty
+                        ? Center(
+                            child: Column(
+                              children: [
+                                SizedBox(height: 270),
+                                Text(
+                                  "No help requests found",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: filteredRequests.length,
+                            itemBuilder: (context, index) {
+                              QueryDocumentSnapshot request = filteredRequests[index];
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: filteredRequests.length,
-                      itemBuilder: (context, index) {
-                        QueryDocumentSnapshot request = filteredRequests[index];
-
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 6),
-                          child: HelpRequest(
-                            request: request,
-                          ),
-                        );
-                      },
-                    );
+                              return Container(
+                                margin: EdgeInsets.symmetric(vertical: 6),
+                                child: HelpRequest(
+                                  request: request,
+                                ),
+                              );
+                            },
+                          );
                   },
                 );
               },

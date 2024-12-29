@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:awn/firebase_options.dart';
-import 'package:awn/screens/login_screen.dart';
-import 'package:awn/screens/volunteer_Portal/home.dart' as volunteer;
-import 'package:awn/screens/special_Need_Portal/home.dart' as special_need;
+import 'package:awn/screens/auth_screen.dart';
+import 'package:awn/screens/volunteer_portal/home.dart' as volunteer;
+import 'package:awn/screens/special_need_portal/home.dart' as special_need;
 import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/theme.dart' as custom_theme;
 
@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
               },
             );
           }
-          return const AuthenticationPage();
+          return const AuthenticationScreen();
         },
       ),
     );

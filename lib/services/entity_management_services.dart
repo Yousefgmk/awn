@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;
 
@@ -27,6 +27,7 @@ void submitHelpRequest(
       'status': 'pending',
       'type': type,
       'requestedMajor': major,
+      'volunteerId1' : "",
       'volunteerId2': ""
     });
 

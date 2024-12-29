@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/services/notification_services.dart' as notification_services;
@@ -72,7 +72,7 @@ class HelpRequest extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
-                  "NOTE: You will be a second responder if the first user withdraws.",
+                  "NOTE: Backup Volunteer\nYou will be assigned if the current volunteer withdraws.",
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.orange,

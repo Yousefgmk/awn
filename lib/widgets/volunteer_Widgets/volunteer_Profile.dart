@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:awn/services/auth_services.dart' as auth_services;
 
 class VolunteerProfile extends StatefulWidget {
@@ -173,7 +174,7 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         const SizedBox(height: 5),
-                        // Display the rating from the database
+                        // Retrieve the rating
                         StreamBuilder<DocumentSnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection('volunteers')

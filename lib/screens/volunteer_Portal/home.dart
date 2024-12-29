@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import 'package:awn/widgets/volunteer_Widgets/volunteer_profile.dart';
-import 'package:awn/widgets/volunteer_Widgets/help_requests_list.dart';
-import 'package:awn/widgets/volunteer_Widgets/verified_help_requests_list.dart';
+import 'package:awn/widgets/volunteer_widgets/volunteer_profile.dart';
+import 'package:awn/widgets/volunteer_widgets/help_requests_list.dart';
+import 'package:awn/widgets/volunteer_widgets/verified_help_requests_list.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/services/notification_services.dart' as notification_services;
 

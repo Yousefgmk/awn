@@ -3,9 +3,9 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import 'package:awn/screens/special_Need_Portal/help_form.dart';
-import 'package:awn/widgets/special_Need_Widgets/special_need_profile.dart';
-import 'package:awn/widgets/special_Need_Widgets/active_help_requests_list.dart';
+import 'package:awn/screens/special_need_portal/help_form.dart';
+import 'package:awn/widgets/special_need_widgets/special_need_profile.dart';
+import 'package:awn/widgets/special_need_widgets/active_help_requests_list.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/services/notification_services.dart' as notification_services;
 

@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 
 import 'package:awn/widgets/custom_dropdown_button.dart';
@@ -134,13 +134,13 @@ class _HelpFormState extends State<HelpForm> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CustomDropdownButton(
+                          CustomDropdownButton( // Category
                             controller: _searchController,
                             selectedDropDownValue: _selectedDropDownValue,
                             onChanged: _onDropdownValueChanged,
                           ),
                           const SizedBox(height: 16),
-                          CustomTextFormField(
+                          CustomTextFormField( // Description
                             controller: _descriptionController,
                             labelText: "Description",
                             hintText: "describe your help request",
@@ -197,7 +197,7 @@ class _HelpFormState extends State<HelpForm> {
                               },
                             ),
                           const SizedBox(height: 16),
-                          Container(
+                          Container( // Date & Time
                             padding: const EdgeInsets.all(5),
                             width: double.infinity,
                             decoration: BoxDecoration(
@@ -279,7 +279,7 @@ class _HelpFormState extends State<HelpForm> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          Container(
+                          Container( // Location
                             padding: const EdgeInsets.all(5),
                             width: double.infinity,
                             decoration: BoxDecoration(

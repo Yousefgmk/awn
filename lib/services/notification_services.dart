@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:http/http.dart' as http;
@@ -25,8 +25,8 @@ void _showNotificationPrompt(context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("EnableNotifications"),
-        content: Text("EnableNotificationsMessage"),
+        title: Text("Enable Notifications"),
+        content: Text("Please enable notifications to stay updated."),
         actions: [
           TextButton(
             onPressed: () {

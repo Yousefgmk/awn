@@ -72,6 +72,7 @@ void saveUserData(String id, Map<String, dynamic> data, String userType) async {
     data['rating'] = 0.0;
     data['numberOfRatings'] = 0;
     await fireStore.collection('volunteers').doc(id).set(data);
+    // save user's device token
     await notification_services.saveUserToken(id, true);
   }
 }
