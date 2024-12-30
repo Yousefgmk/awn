@@ -124,6 +124,12 @@ Future<void> sendNotification(
           'title': title,
           'body': body,
         },
+        'android': {
+          'notification': {
+            'sound': 'custom_sound',
+            'channel_id': 'channel_id',
+          },
+        },
       },
     };
 
