@@ -24,7 +24,7 @@ void submitHelpRequest(
       'description': description,
       'date': selectedDate,
       'location': GeoPoint(latitude, longitude),
-      'status': 'pending',
+      'status': 'Pending',
       'type': type,
       'requestedMajor': major,
       'volunteerId1' : "",

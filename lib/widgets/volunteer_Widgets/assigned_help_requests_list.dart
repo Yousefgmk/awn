@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:awn/widgets/volunteer_widgets/verified_help_request.dart';
+import 'package:awn/widgets/volunteer_widgets/assigned_help_request.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 
-class VerifiedHelpRequests extends StatefulWidget {
-  const VerifiedHelpRequests({super.key});
+class AssignedHelpRequests extends StatefulWidget {
+  const AssignedHelpRequests({super.key});
 
   @override
-  State<VerifiedHelpRequests> createState() => _VerifiedHelpRequestsState();
+  State<AssignedHelpRequests> createState() => _AssignedHelpRequestsState();
 }
 
-class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
+class _AssignedHelpRequestsState extends State<AssignedHelpRequests> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -24,7 +24,7 @@ class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
               stream: FirebaseFirestore.instance
                   .collection('helpRequests')
                   .where('volunteerId1', isEqualTo: auth_services.currentUid)
-                  .where('status', isEqualTo: 'verified')
+                  .where('status', isEqualTo: 'Assigned')
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,7 +50,7 @@ class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
                       children: [
                         SizedBox(height: 330),
                         Text(
-                          "No verified help requests found",
+                          "No assigned help requests found",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
@@ -71,7 +71,7 @@ class _VerifiedHelpRequestsState extends State<VerifiedHelpRequests> {
 
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 6),
-                      child: VerifiedHelpRequest(
+                      child: AssignedHelpRequest(
                         request: request,
                       ),
                     );

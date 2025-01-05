@@ -121,14 +121,18 @@ class _HelpRequestsListState extends State<HelpRequestsList> {
                           request.data() as Map<String, dynamic>;
                       List<dynamic> rejectedIds =
                           requestData['rejectedIds'] ?? [];
+                      DateTime requestTime = requestData['date'].toDate();
 
-                      if (rejectedIds.contains(volunteerId1)) {
+                      if(requestTime.isBefore(DateTime.now())) {
+                        return false;
+                      }
+                      else if (rejectedIds.contains(volunteerId1)) {
                         return false;
                       } else if (requestData['requestedMajor'] != null &&
                           requestData['requestedMajor'] != volunteerMajor) {
                         return false;
-                      } else if ((requestData['status'] == 'accepted' ||
-                              requestData['status'] == 'verified') &&
+                      } else if ((requestData['status'] == 'Accepted' ||
+                              requestData['status'] == 'Assigned') &&
                           requestData['volunteerId1'] ==
                               auth_services.currentUid) {
                         return false;

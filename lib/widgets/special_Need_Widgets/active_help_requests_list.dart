@@ -19,7 +19,7 @@ class _ActiveHelpRequestsState extends State<ActiveHelpRequests> {
       stream: FirebaseFirestore.instance
           .collection('helpRequests')
           .where('specialNeedId', isEqualTo: auth_services.currentUid)
-          .where('status', whereIn: ['accepted', 'verified']).snapshots(),
+          .where('status', whereIn: ['Accepted', 'Assigned']).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -41,7 +41,7 @@ class _ActiveHelpRequestsState extends State<ActiveHelpRequests> {
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Center(
             child: Text(
-              "No accepted or verified help requests found",
+              "No accepted or assigned help requests found",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,

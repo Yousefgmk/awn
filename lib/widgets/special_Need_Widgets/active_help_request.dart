@@ -46,10 +46,16 @@ class ActiveHelpRequest extends StatelessWidget {
 
     if (confirmReject == true) {
       try {
+        await FirebaseFirestore.instance
+            .collection('volunteers')
+            .doc(requestData['volunteerId1'])
+            .update({
+          'isInvolved': false,
+        });
         List<dynamic> rejectedIds = requestData['rejectedIds'] ?? [];
         rejectedIds.add(// Add volunteerId1 to rejected list
           requestData['volunteerId1'],
-        ); 
+        );
 
         if (requestData['volunteerId2'] != null &&
             requestData['volunteerId2'] != "") {
@@ -60,7 +66,7 @@ class ActiveHelpRequest extends StatelessWidget {
               .update({
             'volunteerId1': requestData['volunteerId2'],
             'volunteerId2': null,
-            'status': 'accepted',
+            'status': 'Accepted',
             'rejectedIds': rejectedIds,
           });
         } else {
@@ -70,7 +76,7 @@ class ActiveHelpRequest extends StatelessWidget {
               .doc(requestId)
               .update({
             'volunteerId1': null,
-            'status': 'pending',
+            'status': 'Pending',
             'rejectedIds': rejectedIds,
           });
         }
@@ -101,8 +107,8 @@ class ActiveHelpRequest extends StatelessWidget {
       );
 
       if (rating != null) {
-        double currentRating = volunteerData['rating'] ?? 0;
-        int numberOfRatings = volunteerData['numberOfRatings'] ?? 0;
+        double currentRating = volunteerData['rating'].toDouble() ?? 0;
+        int numberOfRatings = volunteerData['numberOfRatings'].toInt() ?? 0;
         double newRating =
             (currentRating * numberOfRatings + rating) / (numberOfRatings + 1);
 
@@ -112,7 +118,15 @@ class ActiveHelpRequest extends StatelessWidget {
             .update({
           'rating': newRating,
           'numberOfRatings': numberOfRatings + 1,
+          'isInvolved': false
         });
+
+        await notification_services.sendNotification(
+          requestData['volunteerId1'],
+          true,
+          "Thank You For the Help!",
+          "Open the app to check your new rating.",
+        );
 
         await _archiveRequest(requestId, requestData, 'completed', context);
       }
@@ -132,8 +146,8 @@ class ActiveHelpRequest extends StatelessWidget {
     BuildContext context,
   ) async {
     try {
-      double currentRating = volunteerData['rating'] ?? 0;
-      int numberOfRatings = volunteerData['numberOfRatings'] ?? 0;
+      double currentRating = volunteerData['rating'].toDouble() ?? 0;
+      int numberOfRatings = volunteerData['numberOfRatings'].toInt() ?? 0;
       double newRating =
           (currentRating * numberOfRatings - 2) / (numberOfRatings);
       newRating = newRating.clamp(0.0, 5.0);
@@ -141,7 +155,7 @@ class ActiveHelpRequest extends StatelessWidget {
       await FirebaseFirestore.instance
           .collection('volunteers')
           .doc(requestData['volunteerId1'])
-          .update({'rating': newRating});
+          .update({'rating': newRating, 'isInvolved': false});
 
       await _archiveRequest(requestId, requestData, 'notcompleted', context);
     } catch (e) {
@@ -185,7 +199,7 @@ class ActiveHelpRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     String requestId = request.id;
     Map<String, dynamic> requestData = request.data() as Map<String, dynamic>;
-    
+
     return FutureBuilder<DocumentSnapshot>(
       future: FirebaseFirestore.instance
           .collection('volunteers')
@@ -221,7 +235,9 @@ class ActiveHelpRequest extends StatelessWidget {
                 .format((requestData['date'] as Timestamp).toDate())
             : 'Unknown Date';
 
-        String rating = volunteerData['rating'] == 0 ? 'Not Rated' : volunteerData['rating'].toStringAsFixed(2);
+        String rating = volunteerData['rating'] == 0
+            ? 'Not Rated'
+            : volunteerData['rating'].toStringAsFixed(2);
 
         LatLng location = LatLng(
           requestData['location'].latitude,
@@ -280,9 +296,10 @@ class ActiveHelpRequest extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    if (requestData['status'] == 'accepted') ...[
+                    if (requestData['status'] == 'Accepted') ...[
                       ElevatedButton(
-                        onPressed: () => _handleReject(requestId, requestData, context),
+                        onPressed: () =>
+                            _handleReject(requestId, requestData, context),
                         child: const Text(
                           'Reject',
                           style: TextStyle(
@@ -296,7 +313,7 @@ class ActiveHelpRequest extends StatelessWidget {
                             await FirebaseFirestore.instance
                                 .collection('helpRequests')
                                 .doc(requestId)
-                                .update({'status': 'verified'});
+                                .update({'status': 'Assigned'});
                             await notification_services.sendNotification(
                               requestData['volunteerId1'],
                               true,
@@ -313,12 +330,12 @@ class ActiveHelpRequest extends StatelessWidget {
                           }
                         },
                         child: const Text(
-                          'Verify',
+                          'Assign',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
-                    if (requestData['status'] == 'verified') ...[
+                    if (requestData['status'] == 'Assigned') ...[
                       ElevatedButton(
                         onPressed: () => _handleNotCompleted(
                           requestId,

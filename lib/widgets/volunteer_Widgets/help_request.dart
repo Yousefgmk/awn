@@ -10,9 +10,9 @@ class HelpRequest extends StatelessWidget {
   final QueryDocumentSnapshot request;
 
   const HelpRequest({
-    super.key,
+    super.key, 
     required this.request,
-  });
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,8 @@ class HelpRequest extends StatelessWidget {
       requestData['location'].longitude,
     );
 
-    bool isSecondResponder = (requestData['status'] == 'accepted' ||
-            requestData['status'] == 'verified') &&
+    bool isSecondResponder = (requestData['status'] == 'Accepted' ||
+            requestData['status'] == 'Assigned') &&
         requestData['volunteerId2'] == "";
 
     return Card(
@@ -84,38 +84,55 @@ class HelpRequest extends StatelessWidget {
         ),
         trailing: ElevatedButton(
           onPressed: () async {
-            try {
-              if (requestData['status'] == 'pending') {
-                await FirebaseFirestore.instance
-                    .collection('helpRequests')
-                    .doc(requestId)
-                    .update({
-                  'status': 'accepted',
-                  'volunteerId1': auth_services.currentUid,
-                  'volunteerId2': ""
-                });
-                await notification_services.sendNotification(
-                  requestData['specialNeedId'],
-                  false,
-                  "Request Accepted",
-                  "A volunteer has accepted your request. Open the app to respond.",
-                );
-              } else {
-                await FirebaseFirestore.instance
-                    .collection('helpRequests')
-                    .doc(requestId)
-                    .update({
-                  'volunteerId2': auth_services.currentUid,
-                });
-              }
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("Help request accepted!"),
-              ));
-            } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("An error occurred. Please try again.")));
-            }
-          },
+                  try {
+                    var volunteerData = await FirebaseFirestore.instance
+                        .collection('volunteers')
+                        .doc(auth_services.currentUid)
+                        .get();
+                    if (volunteerData['isInvolved']) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content:
+                            Text("You're currently involved in other requests"),
+                      ));
+                      return;
+                    }
+                    await FirebaseFirestore.instance
+                        .collection('volunteers')
+                        .doc(auth_services.currentUid)
+                        .update({
+                      'isInvolved': true,
+                    });
+                    if (requestData['status'] == 'Pending') {
+                      await FirebaseFirestore.instance
+                          .collection('helpRequests')
+                          .doc(requestId)
+                          .update({
+                        'status': 'Accepted',
+                        'volunteerId1': auth_services.currentUid,
+                        'volunteerId2': ""
+                      });
+                      await notification_services.sendNotification(
+                        requestData['specialNeedId'],
+                        false,
+                        "Request Accepted",
+                        "A volunteer has accepted your request. Open the app to respond.",
+                      );
+                    } else {
+                      await FirebaseFirestore.instance
+                          .collection('helpRequests')
+                          .doc(requestId)
+                          .update({
+                        'volunteerId2': auth_services.currentUid,
+                      });
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Help request accepted!"),
+                    ));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("An error occurred. Please try again.")));
+                  }
+                },
           child: const Text(
             "Accept",
             style: TextStyle(fontWeight: FontWeight.bold),

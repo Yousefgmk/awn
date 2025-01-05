@@ -6,10 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/services/notification_services.dart' as notification_services;
 
-class VerifiedHelpRequest extends StatelessWidget {
+class AssignedHelpRequest extends StatelessWidget {
   final QueryDocumentSnapshot request;
 
-  const VerifiedHelpRequest({
+  const AssignedHelpRequest({
     super.key,
     required this.request,
   });
@@ -46,15 +46,32 @@ class VerifiedHelpRequest extends StatelessWidget {
 
     if (confirmWithdraw == true) {
       try {
-        if (requestData['volunteerId2'] != null && requestData['volunteerId2'] != "") {
-          // If volunteerId2 exists, volunteerId1 takes volunteerId2 value and volunteerId2 is set to ""
+        // penalty for withdrawal
+        DocumentSnapshot<Map<String, dynamic>> volunteerData =
+            await FirebaseFirestore.instance
+                .collection('volunteers')
+                .doc(auth_services.currentUid)
+                .get();
+        double currentRating = volunteerData['rating'].toDouble() ?? 0;
+        int numberOfRatings = volunteerData['numberOfRatings'].toInt() ?? 0;
+        double newRating =
+            (currentRating * numberOfRatings - 1) / (numberOfRatings);
+        newRating = newRating.clamp(0.0, 5.0);
+        await FirebaseFirestore.instance
+            .collection('volunteers')
+            .doc(requestData['volunteerId1'])
+            .update({'rating': newRating});
+
+        if (requestData['volunteerId2'] != null &&
+            requestData['volunteerId2'] != "") {
+          // If volunteerId2 exists, volunteerId2 takes volunteerId1 value and volunteerId2 is set to ""
           await FirebaseFirestore.instance
               .collection('helpRequests')
               .doc(requestId)
               .update({
             'volunteerId1': requestData['volunteerId2'],
             'volunteerId2': "",
-            'status': 'accepted',
+            'status': 'Accepted',
             'rejectedIds': FieldValue.arrayUnion([auth_services.currentUid])
           });
           await notification_services.sendNotification(
@@ -70,7 +87,7 @@ class VerifiedHelpRequest extends StatelessWidget {
               .doc(requestId)
               .update({
             'volunteerId1': "",
-            'status': 'pending',
+            'status': 'Pending',
             'rejectedIds': FieldValue.arrayUnion([auth_services.currentUid])
           });
           await notification_services.sendNotification(
@@ -149,29 +166,58 @@ class VerifiedHelpRequest extends StatelessWidget {
             // Withdraw Button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () =>
-                      _handleWithdraw(requestId, requestData, context),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 24,
-                    ),
-                  ),
-                  child: const Text(
-                    'Withdraw',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
+              children: DateTime.now().isBefore(requestData['date'].toDate())
+                  ? [
+                      ElevatedButton(
+                        onPressed: () =>
+                            _handleWithdraw(requestId, requestData, context),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
+                          ),
+                        ),
+                        child: const Text(
+                          'Withdraw',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ]
+                  : [
+                      ElevatedButton(
+                        onPressed: () {
+                          notification_services.sendNotification(
+                            requestData['specialNeedId'],
+                            false,
+                            "Rating Required",
+                            "Open the app and rate the previous volunteer.",
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
+                          ),
+                        ),
+                        child: const Text(
+                          'Remind for Rating',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
             ),
           ],
         ),

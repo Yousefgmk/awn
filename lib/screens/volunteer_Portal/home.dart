@@ -4,7 +4,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'package:awn/widgets/volunteer_widgets/volunteer_profile.dart';
 import 'package:awn/widgets/volunteer_widgets/help_requests_list.dart';
-import 'package:awn/widgets/volunteer_widgets/verified_help_requests_list.dart';
+import 'package:awn/widgets/volunteer_widgets/assigned_help_requests_list.dart';
 import 'package:awn/services/auth_services.dart' as auth_services;
 import 'package:awn/services/notification_services.dart' as notification_services;
 
@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
     Widget activePage = const HelpRequestsList();
 
     if (_currentIndex == 1) {
-      activePage = const VerifiedHelpRequests();
+      activePage = const AssignedHelpRequests();
     } else if (_currentIndex == 2) {
       activePage = VolunteerProfile(volunteerData: volunteerData!);
     }
@@ -115,7 +115,7 @@ class _HomeState extends State<Home> {
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.library_add_check_outlined),
-            title: const Text("Verified Requests"),
+            title: const Text("Assigned Requests"),
             selectedColor: Theme.of(context).colorScheme.primary,
           ),
           SalomonBottomBarItem(

@@ -425,6 +425,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             'email': _emailController.text.trim(),
             'phoneNumber': _phoneNumberController.text,
             'major': _selectedMajor,
+            'isInvolved': false
           },
         );
       }

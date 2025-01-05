@@ -174,7 +174,7 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         const SizedBox(height: 5),
-                        // Retrieve the rating
+                        // Rating listener
                         StreamBuilder<DocumentSnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection('volunteers')
@@ -192,16 +192,29 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                                 as Map<String, dynamic>;
                             double rating =
                                 (volunteerData['rating'] ?? 0.0).toDouble();
+                            int numberOfRatings = (volunteerData['numberOfRatings'] ?? 0.0).toInt();
 
-                            return Row(
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+                                Row(
+                                  
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      rating.toStringAsFixed(2),
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.grey),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 5),
+                                const SizedBox(height: 5),
                                 Text(
-                                  rating.toStringAsFixed(2),
+                                  "Requests Completed: $numberOfRatings",
                                   style: const TextStyle(
                                       fontSize: 16, color: Colors.grey),
                                 ),
@@ -209,12 +222,7 @@ class _VolunteerProfileState extends State<VolunteerProfile> {
                             );
                           },
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          "Requests Completed: ${widget.volunteerData['numberOfRatings']}",
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.grey),
-                        ),
+                        
                       ],
                     ),
                   ],
