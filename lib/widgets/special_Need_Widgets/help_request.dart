@@ -120,6 +120,19 @@ class HelpRequest extends StatelessWidget {
                             "Request Removed",
                             "This request has been deleted. Explore other opportunities.",
                           );
+                          await FirebaseFirestore.instance.collection('volunteers').doc(requestData['volunteerId1']).update(
+                            {
+                              'isInvolved' : false
+                            }
+                          );
+                        }
+
+                        if(requestData['volunteerId2'] != null && requestData['volunteerId2'] != "") {
+                          await FirebaseFirestore.instance.collection('volunteers').doc(requestData['volunteerId2']).update(
+                            {
+                              'isInvolved' : false
+                            }
+                          );
                         }
 
                         await entity_services.deleteHelpRequest(requestId);
