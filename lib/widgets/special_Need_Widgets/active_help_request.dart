@@ -68,7 +68,7 @@ class ActiveHelpRequest extends StatelessWidget {
             'volunteerId2': null,
             'status': 'Accepted',
             'rejectedIds': rejectedIds,
-          });
+          }); //!
         } else {
           // If volunteerId2 is empty, change status to pending and volunteerId1 is set to null
           await FirebaseFirestore.instance
@@ -128,6 +128,15 @@ class ActiveHelpRequest extends StatelessWidget {
           "Open the app to check your new rating.",
         );
 
+        if(requestData['volunteerId2'] != null && requestData['volunteerId2'] != "") {
+          await FirebaseFirestore.instance
+            .collection('volunteers')
+            .doc(requestData['volunteerId2'])
+            .update({
+            'isInvolved': false
+          });
+        }
+
         await _archiveRequest(requestId, requestData, 'completed', context);
       }
     } catch (e) {
@@ -156,6 +165,15 @@ class ActiveHelpRequest extends StatelessWidget {
           .collection('volunteers')
           .doc(requestData['volunteerId1'])
           .update({'rating': newRating, 'isInvolved': false});
+
+      if(requestData['volunteerId2'] != null && requestData['volunteerId2'] != "") {
+          await FirebaseFirestore.instance
+            .collection('volunteers')
+            .doc(requestData['volunteerId2'])
+            .update({
+            'isInvolved': false
+          });
+      }
 
       await _archiveRequest(requestId, requestData, 'notcompleted', context);
     } catch (e) {

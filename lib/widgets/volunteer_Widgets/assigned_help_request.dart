@@ -46,21 +46,30 @@ class AssignedHelpRequest extends StatelessWidget {
 
     if (confirmWithdraw == true) {
       try {
-        // penalty for withdrawal
-        DocumentSnapshot<Map<String, dynamic>> volunteerData =
-            await FirebaseFirestore.instance
-                .collection('volunteers')
-                .doc(auth_services.currentUid)
-                .get();
-        double currentRating = volunteerData['rating'].toDouble() ?? 0;
-        int numberOfRatings = volunteerData['numberOfRatings'].toInt() ?? 0;
-        double newRating =
-            (currentRating * numberOfRatings - 1) / (numberOfRatings);
-        newRating = newRating.clamp(0.0, 5.0);
+        // penalty for withdrawal within 24 hours
+        if (request['date']
+            .toDate()
+            .isBefore(DateTime.now().add(Duration(hours: 24)))) {
+          DocumentSnapshot<Map<String, dynamic>> volunteerData =
+              await FirebaseFirestore.instance
+                  .collection('volunteers')
+                  .doc(auth_services.currentUid)
+                  .get();
+          double currentRating = volunteerData['rating'].toDouble() ?? 0;
+          int numberOfRatings = volunteerData['numberOfRatings'].toInt() ?? 0;
+          double newRating =
+              (currentRating * numberOfRatings - 1) / (numberOfRatings);
+          newRating = newRating.clamp(0.0, 5.0);
+          await FirebaseFirestore.instance
+              .collection('volunteers')
+              .doc(requestData['volunteerId1'])
+              .update({'rating': newRating});
+        }
+
         await FirebaseFirestore.instance
             .collection('volunteers')
-            .doc(requestData['volunteerId1'])
-            .update({'rating': newRating});
+            .doc(auth_services.currentUid)
+            .update({'isInvolved': false});
 
         if (requestData['volunteerId2'] != null &&
             requestData['volunteerId2'] != "") {
@@ -79,7 +88,7 @@ class AssignedHelpRequest extends StatelessWidget {
             false,
             "Volunteer Withdrew",
             "A new volunteer is ready to help. Open the app to respond.",
-          );
+          ); //!
         } else {
           // If volunteerId2 is empty, change status to pending and volunteerId1 is set to ""
           await FirebaseFirestore.instance
